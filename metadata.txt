@@ -2,6 +2,7 @@
 users:
   - name: ansible
     shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
     ssh_authorized_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDVw6fYq0ChN10gBpU5yrEvJJ4JQ8em4yz1eO1mKA6u1WVrnH55u86oA3NjttrtoeQbjUO59KeN9RErXgM9S2YYTuE8x2H45Obpsd0+kE0oO8AG2cHRnrM7UvhubX+iR64ij/ohs8Eb6TcmN5pt8UXqriitP8UlTU9w6wZmdkblMXKvrNOZ3M8FsfwU39neU0V9b+jW29xLO9yJHlFFuRRNENlaLYf0zqha8MqW94jKEpst2043+BocCPxSK8o9I5lGj43VrMZ/GXtlHFUC+Bw2yOTY76otxCP/x+h8Si6Z6nAn2CNEt2A1uQyvGafX7aLsIin8WEjbrai/46Sb+fspCrDYtfBDhcYAK++X3CFtC8ExkVFc5xpzVzE8g1IgCE3MnRo9VrdBXDTwCTBMnoabvZ+t8CA1XYQC62LM0IZNU4+/NuO7jEcZxb5ntwWONDCPMO/weBM0wrBhzr4KgcmOpJMZQ8IP1Z2MAnE3VIcKswLnfrpqRE5aDqHjd1088E0= student@fhmf43qgaamnml6hu18q
 
