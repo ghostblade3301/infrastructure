@@ -10,13 +10,7 @@ variable "folder_id" {
   description = "yandex folder id"
 }
 
-variable "IAM_token" {
-  type = string
-  description = "yandex iam token"
-}
-
 variable "zone" {
   type = string
   default = "ru-central1-a"
-  description = "yandex zone"
 }

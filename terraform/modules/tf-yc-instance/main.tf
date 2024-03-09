@@ -1,15 +1,11 @@
-module "yandex_compute_network" {
-  source = "../tf-yc-network"
-}
-
 resource "yandex_compute_instance" "vm-1" {
-  name = "chapter5-lesson2-std-026-35"
+  name = var.name
   platform_id = var.platform_id
   zone = var.zone
 
   resources {
-    cores  = 2
-    memory = 2
+    cores  = var.cores
+    memory = var.memory
   }
 
   boot_disk {
@@ -24,12 +20,12 @@ resource "yandex_compute_instance" "vm-1" {
     }
 
   network_interface {
-    subnet_id = module.yandex_compute_network.yandex_vpc_subnets[var.zone].subnet_id
+    subnet_id = var.subnet_ids["${var.zone}"].subnet_id
     nat = true
   }
 
   metadata = {
-    user-data = "${file("~/infrastucture/metadata.txt")}"
+    user-data = "${file("~/Devops/infrastucture/metadata.txt")}"
     serial-port-enable = 1
   }
 }

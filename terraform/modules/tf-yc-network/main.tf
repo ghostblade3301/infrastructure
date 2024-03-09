@@ -1,8 +1,8 @@
-data "yandex_vpc_network" "default" {
+data "yandex_vpc_network" "vpc_network" {
   name = "default"
 }
 
-data "yandex_vpc_subnet" "default" {
-  for_each = var.instance_zone
-  name = "${data.yandex_vpc_network.default.name}-${each.key}"
+data "yandex_vpc_subnet" "vpc_subnet" {
+  for_each = var.network_zones
+  name = "${data.yandex_vpc_network.vpc_network.name}-${each.key}"
 } 
