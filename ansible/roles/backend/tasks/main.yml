@@ -31,6 +31,18 @@
     recurse: true
   become: true
 
+# Скачивание исполняемого файла бэкенда из хранилища nexus
+- name: download jar file from nexus
+  maven_artifact:
+    username: "{{ nexus_username }}"
+    password:  "{{ nexus_password }}"
+    dest: "{{ backend_working_directory }}sausage-store.jar"
+    repository_url: "https://nexus.praktikum-services.tech/repository/std-026-35-backend2/"
+    group_id: "com.yandex.practicum.devops"
+    artifact_id: "sausage-store"
+    version: "{{ nexus_jar_version }}"
+  become: true
+
 # Обновляем конфигурацию systemd для запуска бэкенд юнита
 - name: reloading systemd daemons
   systemd:
