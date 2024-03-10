@@ -25,7 +25,7 @@ resource "yandex_compute_instance" "vm-1" {
   }
 
   metadata = {
-    user-data = "${file("~/Devops/infrastucture/metadata.txt")}"
+    user-data = "${file("~/infrastucture/metadata.txt")}"
     serial-port-enable = 1
   }
 }
