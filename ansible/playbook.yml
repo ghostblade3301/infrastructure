@@ -1,0 +1,13 @@
+# Файл который запускает все роли
+
+# Запуск роли бэкенда с хостами бэкенда
+- name: launching the backend role
+  hosts: backend
+  roles:
+    - backend
+
+# Запуск роли фронтенда с хостами фронтенда
+- name: launching the frontend role
+  hosts: frontend
+  roles:
+    - frontend
