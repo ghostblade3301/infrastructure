@@ -6,11 +6,29 @@
     shell: /sbin/nologin
   become: true
 
-# Создание юнит файла бэкенда
+# Установка java
+- name: java installation
+  apt:
+    pkg:
+    - openjdk-16-jdk
+  become: true
+
+# Создание юнит файла бэкенда из шаблона j2
 - name: create sausage-store-backend.service
   template:
     src: sausage-store-backend.service.j2
     dest: /etc/systemd/system/sausage-store-backend.service
+  become: true
+
+# Создание директории для бэкенд файлов и настройка прав
+- name: Create directory for backend files
+  file:
+    path: "{{ backend_working_directory }}"
+    state: directory
+    owner: "{{ backend_service_user }}"
+    group: "{{ backend_service_user }}"
+    mode: 0755
+    recurse: true
   become: true
 
 # Обновляем конфигурацию systemd для запуска бэкенд юнита
