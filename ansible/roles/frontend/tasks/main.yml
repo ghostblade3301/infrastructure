@@ -20,3 +20,15 @@
     create_home: no
     shell: /sbin/nologin
   become: true
+
+# Скачивание исполняемого файла бэкенда из хранилища nexus
+- name: download frontend archive file from nexus
+  get_url:
+    username: "{{ nexus_username }}"
+    password:  "{{ nexus_password }}"
+    dest: "{{ frontend_working_directory }}sausage-store.jar"
+    repository_url: 
+      - >
+        "http://nexus.praktikum-services.tech/repository/std-026-35-frontend2/
+        {{ nexus_archive_version }}/sausage-store-{{ nexus_archive_version }}.tar.gz"
+  become: true

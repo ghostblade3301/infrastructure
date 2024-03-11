@@ -3,3 +3,4 @@ frontend_service_user: frontend
 frontend_service_user_group: frontend
 frontend_working_directory: /etc/nginx/sites-available/
 
+nexus_archive_version: 1.0.1110673
