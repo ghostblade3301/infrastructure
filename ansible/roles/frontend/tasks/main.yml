@@ -1,0 +1,22 @@
+# Обновление пакетов системы
+- name: updating packages
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+    upgrade: yes
+  become: true
+
+# Установка nginx
+- name: install nginx
+  apt:
+    pkg:
+    - nginx
+  become: true
+
+# Добавление сервисного пользователя для фронтенда
+- name: frontend service account setup
+  user:
+    name: "{{ frontend_service_user }}"
+    create_home: no
+    shell: /sbin/nologin
+  become: true

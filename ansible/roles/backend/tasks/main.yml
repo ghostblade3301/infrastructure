@@ -6,6 +6,14 @@
     shell: /sbin/nologin
   become: true
 
+# Обновление пакетов системы
+- name: updating packages
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+    upgrade: yes
+  become: true
+
 # Установка java
 - name: java installation
   apt:

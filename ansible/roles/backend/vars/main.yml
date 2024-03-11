@@ -1,5 +1,4 @@
 # Файл с переменными для sausage-store.service и бэкенд роли
-
 backend_service_user: backend
 backend_service_user_group: backend
 backend_working_directory: /opt/sausage-store/bin/
