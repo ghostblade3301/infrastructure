@@ -21,22 +21,30 @@
     shell: /sbin/nologin
   become: true
 
-# Скачивание архима со статикой из хранилища nexus
+# Создание рабочей директории
+- name: Create directory for frontend files
+  file:
+    path: "{{ frontend_working_directory }}"
+    state: directory
+    group: "{{ frontend_service_user }}"
+    owner: "{{ frontend_service_user }}"
+    recurse: true
+    mode: 0755
+  become: true
+
+# Скачивание архива со статикой из хранилища nexus
 - name: download frontend archive file from nexus
   get_url:
     username: "{{ nexus_username }}"
     password:  "{{ nexus_password }}"
-    dest: "{{ frontend_working_directory }}sausage-store.jar"
-    repository_url: 
-      - >
-        "http://nexus.praktikum-services.tech/repository/std-026-35-frontend2/
-        {{ nexus_archive_version }}/sausage-store-{{ nexus_archive_version }}.tar.gz"
+    dest: "{{ frontend_working_directory }}"
+    url: "https://nexus.praktikum-services.tech/repository/std-026-35-frontend2/{{ nexus_archive_version }}/sausage-store-{{ nexus_archive_version }}.tar.gz"
   become: true
 
 # Извлечение файлов из архива
 - name: extracting frontend files
   unarchive:
-    src: "{{ frontend_working_directory }}/sausage-store-{{ nexus_archive_version }}.tar.gz"
+    src: "{{ frontend_working_directory }}sausage-store-{{ nexus_archive_version }}.tar.gz"
     dest: "{{ frontend_working_directory }}"
     remote_src: yes
   become: true
@@ -48,11 +56,16 @@
     dest: "/etc/nginx/sites-available/sausage-store.conf"
   become: true
 
+# Удаление старой символьной ссылки
+- name: remove old symbolic link
+  command: rm -rf /etc/nginx/sites-enabled/sausage-store.conf
+  become: true  
+
 # Создание символьной ссылки в директорию sites-enabled
 - name: create a symbolic link
   file:
     src: "/etc/nginx/sites-available/sausage-store.conf"
-    dest: "/etc/nginx/sites-enabled/"
+    dest: "/etc/nginx/sites-enabled/sausage-store.conf"
     state: link
     force: yes
   become: true

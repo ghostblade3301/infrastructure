@@ -2,7 +2,7 @@ server {
     listen 80;
     # Логи доступа и ошибок
     access_log {{ nginx_access_log }};
-    error_log {{ nginx_access_log }};
+    error_log {{ nginx_error_log }};
 
     location / {
         root /opt/sausage-store/static/dist/frontend/;

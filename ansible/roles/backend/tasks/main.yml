@@ -1,3 +1,7 @@
+- name: include .vault vars
+  include_vars:
+    file: ".vault"
+
 # Добавление сервисного пользователя для бэкенда
 - name: backend service account setup
   user:
@@ -31,7 +35,7 @@
 # Создание юнит файла бэкенда из шаблона j2
 - name: create sausage-store-backend.service
   template:
-    src: sausage-store-backend.service.j2
+    src: sausage-store-backend.j2
     dest: /etc/systemd/system/sausage-store-backend.service
   become: true
 
