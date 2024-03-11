@@ -19,6 +19,7 @@
   apt:
     pkg:
     - openjdk-16-jdk
+    - python3-pip
   become: true
 
 # Создание юнит файла бэкенда из шаблона j2
