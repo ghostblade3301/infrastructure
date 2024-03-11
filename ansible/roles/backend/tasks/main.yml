@@ -59,7 +59,7 @@
 
 # Запуск бэкенд юнита
 - name: start of sausage-store-backend.service
-service:
-  name: sausage-store-backend
-  state: started
-become: true
+  service:
+    name: sausage-store-backend
+    state: started
+  become: true

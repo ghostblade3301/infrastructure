@@ -21,7 +21,7 @@
     shell: /sbin/nologin
   become: true
 
-# Скачивание исполняемого файла бэкенда из хранилища nexus
+# Скачивание архима со статикой из хранилища nexus
 - name: download frontend archive file from nexus
   get_url:
     username: "{{ nexus_username }}"
@@ -31,4 +31,35 @@
       - >
         "http://nexus.praktikum-services.tech/repository/std-026-35-frontend2/
         {{ nexus_archive_version }}/sausage-store-{{ nexus_archive_version }}.tar.gz"
+  become: true
+
+# Извлечение файлов из архива
+- name: extracting frontend files
+  unarchive:
+    src: "{{ frontend_working_directory }}/sausage-store-{{ nexus_archive_version }}.tar.gz"
+    dest: "{{ frontend_working_directory }}"
+    remote_src: yes
+  become: true
+
+# Создание nginx sausage-store.conf файла из шаблона j2
+- name: create sausage-store.conf
+  template:
+    src: sausage-store.j2
+    dest: "/etc/nginx/sites-available/sausage-store.conf"
+  become: true
+
+# Создание символьной ссылки в директорию sites-enabled
+- name: create a symbolic link
+  file:
+    src: "/etc/nginx/sites-available/sausage-store.conf"
+    dest: "/etc/nginx/sites-enabled/"
+    state: link
+    force: yes
+  become: true
+
+# Перезагрузка сервиса nginx
+- name: restarting nginx.service
+  service:
+    name: nginx
+    state: restarted
   become: true
