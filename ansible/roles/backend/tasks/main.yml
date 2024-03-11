@@ -1,3 +1,4 @@
+# Подключение хранилища для передачи nexus переменных
 - name: include .vault vars
   include_vars:
     file: ".vault"
