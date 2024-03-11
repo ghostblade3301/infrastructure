@@ -55,11 +55,23 @@
   maven_artifact:
     username: "{{ nexus_username }}"
     password:  "{{ nexus_password }}"
-    dest: "{{ backend_working_directory }}sausage-store.jar"
+    dest: "{{ backend_working_directory }}sausage-store-backend.jar"
     repository_url: "https://nexus.praktikum-services.tech/repository/std-026-35-backend2/"
     group_id: "com.yandex.practicum.devops"
     artifact_id: "sausage-store"
     version: "{{ nexus_jar_version }}"
+    mode: 0644
+  become: true
+
+# Создаем директорию для логов бэкенд юнита 
+- name: creating log directory for backend unit
+  file:      
+    path: "{{ backend_log_directory }}"
+    state: directory
+    owner: "{{ backend_service_user }}"
+    group: "{{ backend_service_user }}"
+    mode: 0755
+    recurse: true
   become: true
 
 # Обновляем конфигурацию systemd для запуска бэкенд юнита

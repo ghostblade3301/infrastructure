@@ -47,6 +47,8 @@
     src: "{{ frontend_working_directory }}sausage-store-{{ nexus_archive_version }}.tar.gz"
     dest: "{{ frontend_working_directory }}"
     remote_src: yes
+    owner: "{{ frontend_service_user }}"
+    group: "{{ frontend_service_user }}"
   become: true
 
 # Создание nginx sausage-store.conf файла из шаблона j2

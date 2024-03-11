@@ -2,6 +2,7 @@
 backend_service_user: backend
 backend_service_user_group: backend
 backend_working_directory: /opt/sausage-store/bin/
+backend_log_directory: /var/log/sausage-store/
 backend_log_path: /var/log/sausage-store/sausage-store-backend.log
 backend_report_path: /var/log/sausage-store/report.log
 backend_standart_output_path: /var/log/sausage-store/sausage-store-backend.log
