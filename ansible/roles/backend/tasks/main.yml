@@ -1,0 +1,88 @@
+# Подключение хранилища для передачи nexus переменных
+- name: include .vault vars
+  include_vars:
+    file: ".vault"
+
+# Добавление сервисного пользователя для бэкенда
+- name: backend service account setup
+  user:
+    name: "{{ backend_service_user }}"
+    create_home: no
+    shell: /sbin/nologin
+  become: true
+
+# Обновление пакетов системы
+- name: updating packages
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  become: true
+
+# Установка java
+- name: java installation
+  apt:
+    pkg:
+    - openjdk-16-jdk
+    - python3-pip
+    - python3-apt
+  become: true
+
+# Установка lxml
+- name: Install lxml
+  pip: name=lxml
+  become: true
+
+# Создание юнит файла бэкенда из шаблона j2
+- name: create sausage-store-backend.service
+  template:
+    src: sausage-store-backend.j2
+    dest: /etc/systemd/system/sausage-store-backend.service
+  become: true
+
+# Создание директории для бэкенд файлов и настройка прав
+- name: Create directory for backend files
+  file:
+    path: "{{ backend_working_directory }}"
+    state: directory
+    owner: "{{ backend_service_user }}"
+    group: "{{ backend_service_user }}"
+    mode: 0755
+    recurse: true
+  become: true
+
+# Скачивание исполняемого файла бэкенда из хранилища nexus
+- name: download jar file from nexus
+  maven_artifact:
+    username: "{{ nexus_username }}"
+    password:  "{{ nexus_password }}"
+    dest: "{{ backend_working_directory }}sausage-store-backend.jar"
+    repository_url: "https://nexus.praktikum-services.tech/repository/std-026-35-backend2/"
+    group_id: "com.yandex.practicum.devops"
+    artifact_id: "sausage-store"
+    version: "{{ nexus_jar_version }}"
+    mode: 0644
+  become: true
+
+# Создаем директорию для логов бэкенд юнита 
+- name: creating log directory for backend unit
+  file:      
+    path: "{{ backend_log_directory }}"
+    state: directory
+    owner: "{{ backend_service_user }}"
+    group: "{{ backend_service_user }}"
+    mode: 0755
+    recurse: true
+  become: true
+
+# Обновляем конфигурацию systemd для запуска бэкенд юнита
+- name: reloading systemd daemons
+  systemd:
+    daemon_reload: yes
+  become: true
+
+# Запуск бэкенд юнита
+- name: start of sausage-store-backend.service
+  service:
+    name: sausage-store-backend
+    state: started
+  become: true
