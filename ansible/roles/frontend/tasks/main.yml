@@ -59,8 +59,10 @@
 
 # Удаление старой символьной ссылки
 - name: remove old symbolic link
-  command: rm -rf /etc/nginx/sites-enabled/sausage-store.conf
-  become: true  
+  file:
+    path: /etc/nginx/sites-enabled/sausage-store.conf
+    state: absent
+  become: true
 
 # Удаление nginx sites-enabled default
 - name: remove /etc/nginx/sites-enabled/default
