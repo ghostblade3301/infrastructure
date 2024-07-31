@@ -7,9 +7,9 @@ spec:
   tls:
     - secretName: ingress-example-tls
       hosts:
-        - "026-35.k8s.praktikum-services.tech"
+        - "std-026-35.k8s.praktikum-services.tech"
   rules:
-  - host: "026-35.k8s.praktikum-services.tech"
+  - host: "std-026-35.k8s.praktikum-services.tech"
     http:
       paths:
       - path: /
