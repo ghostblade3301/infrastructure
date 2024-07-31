@@ -17,11 +17,11 @@ spec:
     spec:
       containers:
         - name: backend-report
-          image: gitlab.praktikum-services.ru:5050/std-026-35/sausage-store/backend-report_kubernetes:latest
+          image: gitlab.praktikum-services.ru:5050/std-026-35/sausage-store/sausage-backend-report:latest
           imagePullPolicy: IfNotPresent
           env:
             - name: VAULT_HOST
-              value: "http://std-026-35.praktikum-services.tech/"
+              value: "http://std-026-35.praktikum-services.tech:8200/"
             - name: VAULT_TOKEN
               valueFrom:
                 secretKeyRef:
