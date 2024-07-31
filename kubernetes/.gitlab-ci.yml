@@ -3,7 +3,7 @@ stages:
 
 deploy:
   stage: deploy
-  image: alpine/k8s:1.22.6
+  image: alpine/k8s:1.27.5
   environment:
     name: kubernetes
     url: https://std-026-35.praktikum-services.tech
