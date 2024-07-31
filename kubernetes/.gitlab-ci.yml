@@ -3,16 +3,13 @@ stages:
 
 deploy:
   stage: deploy
-  image: alpine/k8s:1.30.3
+  image: alpine/k8s:1.22.6
   environment:
     name: kubernetes
     url: https://std-026-35.praktikum-services.tech
   before_script:
     - mkdir -p ~/.kube
-    - echo ${config}
-    - echo ${KUBECONFIG} > ~/.kube/config
-    - ls ~/.kube/config
-    - cat ~/.kube/config
+    - echo ${kubeconfig} | base64 -d > ~/.kube/config
     - KUBECONFIG=~/.kube/config
     - export KUBECONFIG
   script:
