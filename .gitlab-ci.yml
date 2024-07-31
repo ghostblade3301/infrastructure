@@ -8,4 +8,4 @@ kubernetes:
     strategy: depend
   only:
     changes:
-      - kubernetes/*
+      - kubernetes/**/*
