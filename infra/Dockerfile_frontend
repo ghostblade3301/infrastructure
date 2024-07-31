@@ -1,4 +1,4 @@
-FROM node:16.20.0-alpine3.18 as builder
+FROM node:16.20.0-alpine3.18 AS builder
 WORKDIR /usr/src/app
 COPY ../sausage-store/frontend .
 RUN npm ci && npm run build
@@ -6,3 +6,4 @@ RUN npm ci && npm run build
 FROM nginx:latest
 WORKDIR /app
 COPY --from=builder /usr/src/app/dist/frontend /opt/monitoring/frontend/build/
+EXPOSE 8080
