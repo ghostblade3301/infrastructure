@@ -3,16 +3,12 @@ stages:
 
 deploy:
   stage: deploy
-  image: alpine/k8s:1.22.6
+  image: bitnami/kubectl:latest
   environment:
     name: kubernetes
     url: https://std-026-35.praktikum-services.tech
-  before_script:
-    - mkdir -p ~/.kube
-    - echo ${kubeconfig} | base64 -d > ~/.kube/config
-    - KUBECONFIG=~/.kube/config
-    - export KUBECONFIG
   script:
+    - cp ${kubeconfig} ~/.kube/config
     - kubectl apply -f kubernetes/backend/
     - kubectl apply -f kubernetes/backend-report/
     - kubectl apply -f kubernetes/frontend/
