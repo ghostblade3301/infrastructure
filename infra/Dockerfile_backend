@@ -1,4 +1,4 @@
-FROM maven:3.9.3-eclipse-temurin-20-alpine as builder
+FROM maven:3.9.3-eclipse-temurin-20-alpine AS builder
 ARG VERSION=${VERSION}
 WORKDIR /usr/src/app
 COPY ../sausage-store/backend/src ./src
@@ -17,7 +17,8 @@ RUN keytool -importcert -file YandexInternalRootCA.crt \
     && mkdir /logs \
     && mv YandexInternalRootCA.crt /home/jaruser/.postgresql/root.crt \
     && addgroup --system jaruser \
-    && adduser -S -s /bin/false -G jaruser jaruser -D -H
+    && adduser -S -s /bin/false -G jaruser jaruser -D -H \
+    && chown -R jaruser:jaruser /logs
 RUN apk --no-cache add curl
 COPY --chown=jaruser:jaruser \
      --from=builder /usr/src/app/target/*.jar ./sausage-store.jar
