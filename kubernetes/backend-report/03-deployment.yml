@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: backend-report
-          image: gitlab.praktikum-services.ru:5050/std-026-35/sausage-store/sausage-backend-report:latest
+          image: gitlab.praktikum-services.ru:5050/std-026-35/sausage-store/backend-report_kubernetes:latest
           imagePullPolicy: IfNotPresent
           env:
             - name: VAULT_HOST
