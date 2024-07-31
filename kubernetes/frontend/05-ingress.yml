@@ -4,12 +4,8 @@ metadata:
   name: frontend
 spec:
   ingressClassName: "nginx"
-  tls:
-    - secretName: docker-config-secret
-      hosts:
-        - "std-026-35.k8s.praktikum-services.tech"
   rules:
-  - host: "std-026-35.k8s.praktikum-services.tech"
+  - host: "026-35.k8s.praktikum-services.tech"
     http:
       paths:
       - path: /
