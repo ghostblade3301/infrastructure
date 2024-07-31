@@ -9,8 +9,7 @@ deploy:
     url: https://std-026-35.praktikum-services.tech
   before_script:
     - mkdir -p ~/.kube
-    - echo ${KUBECONFIG} | base64 -d > ~/.kube/config
-    - cat ~/.kube/config
+    - echo ${KUBECONFIG} > ~/.kube/config
     - KUBECONFIG=~/.kube/config
     - export KUBECONFIG
   script:
