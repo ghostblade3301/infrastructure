@@ -12,6 +12,7 @@ spec:
   selector:
     matchLabels:
       app: backend
+  # Pod
   template:
     metadata:
       labels:
