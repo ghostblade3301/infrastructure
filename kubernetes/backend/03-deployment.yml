@@ -24,6 +24,12 @@ spec:
           env:
             - name: VAULT_HOST
               value: "http://std-026-35.praktikum-services.tech:8200/"
+            - name: REPORT_PATH
+              value: "./logs"
+            - name: LOG_PATH
+              value: "./logs"
+            - name: SPRING_FLYWAY_ENABLED
+              value: "false"
             - name: VAULT_TOKEN
               valueFrom:
                 secretKeyRef:
