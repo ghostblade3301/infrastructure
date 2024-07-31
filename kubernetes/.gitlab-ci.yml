@@ -13,3 +13,4 @@ deploy:
     - kubectl apply -f kubernetes/backend-report/
     - kubectl apply -f kubernetes/frontend/
     - rm -f ~/.kube/config
+    - echo "job done"
