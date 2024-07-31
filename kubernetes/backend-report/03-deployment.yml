@@ -20,13 +20,13 @@ spec:
           image: gitlab.praktikum-services.ru:5050/std-026-35/sausage-store/backend-report_kubernetes:latest
           imagePullPolicy: IfNotPresent
           env:
-            - name: VAULT_HOST
-              value: "http://std-026-35.praktikum-services.tech:8200/"
+            - name: PORT
+              value: "8080"
             - name: VAULT_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: vault
-                  key: vault_token
+                  name: mongo
+                  key: spring_data_mongodb_uri
           ports:
             - name: backend-report
               containerPort: 8080
