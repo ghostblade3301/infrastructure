@@ -7,4 +7,4 @@ kubernetes:
     include: "kubernetes/.gitlab-ci.yml"
     strategy: depend
   only:
-    - kubernetes
+    - kubernetes-deployment
