@@ -1,0 +1,3 @@
+[submodule "sausage-store"]
+	path = sausage-store
+	url = https://gitlab.praktikum-services.ru/std-026-35/sausage-store.git
