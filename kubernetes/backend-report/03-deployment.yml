@@ -43,7 +43,6 @@ spec:
           preferredDuringSchedulingIgnoredDuringExecution:
             - weight: 80
               preference:
-                # предпочтение по развертыванию в определенной зоне             
                 matchExpressions:
                   - key: availability-zone
                     operator: In
