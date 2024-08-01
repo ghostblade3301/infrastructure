@@ -6,15 +6,12 @@ metadata:
 data:
   default.conf: |
     server {
-
       listen 8080;
-
       location / {
-        root   /opt/monitoring/frontend/build/;
+        root   /opt/frontend/build/;
         index  index.html;
         try_files $uri $uri/ /index.html;
       }
-
       location /api {
           proxy_pass http://backend:8080;
       }
