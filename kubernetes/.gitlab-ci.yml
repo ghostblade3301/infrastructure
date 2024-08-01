@@ -1,0 +1,16 @@
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  image: bitnami/kubectl:latest
+  environment:
+    name: kubernetes
+    url: https://std-026-35.praktikum-services.tech
+  script:
+    - cp ${kubeconfig} ~/.kube/config
+    - kubectl apply -f kubernetes/backend/
+    - kubectl apply -f kubernetes/backend-report/
+    - kubectl apply -f kubernetes/frontend/
+    - rm -f ~/.kube/config
+    - echo "job done"

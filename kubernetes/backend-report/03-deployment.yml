@@ -1,0 +1,34 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-report
+  labels:
+    app: backend-report
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-report
+  template:
+    metadata:
+      labels:
+        app: backend-report
+    spec:
+      containers:
+        - name: backend-report
+          image: gitlab.praktikum-services.ru:5050/std-026-35/sausage-store/backend-report_kubernetes:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PORT
+              value: "8080"
+            - name: DB
+              valueFrom:
+                secretKeyRef:
+                  name: mongo
+                  key: spring_data_mongodb_uri
+          ports:
+            - name: backend-report
+              containerPort: 8080
+      imagePullSecrets:
+        - name: docker-config-secret
