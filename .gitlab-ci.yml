@@ -4,7 +4,7 @@ stages:
 kubernetes:
   stage: module-pipelines
   trigger:
-    include: "kubernetes/.gitlab-ci.yml"
+    include: "sausage-store-chart/.gitlab-ci.yml"
     strategy: depend
   only:
-    - kubernetes-deployment
+    - helm

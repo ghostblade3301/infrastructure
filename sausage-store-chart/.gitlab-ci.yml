@@ -1,0 +1,22 @@
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  image: dtzar/helm-kubectl
+  environment:
+    name: kubernetes
+    url: https://std-026-35.praktikum-services.tech
+  script:
+    - echo "$SHELL"
+    - pwd
+    - mkdir ~/.kube
+    - cd ~/.kube
+    - touch config
+    - chmod 777 config
+    - cat ${kubeconfig} > config
+    - helm repo add nexus $NEXUS_HELM_REPO --username $NEXUS_REPO_USER --password $NEXUS_REPO_PASS
+    - helm repo update
+    - helm upgrade --install sausage-store --set fqdn="std-026-35.k8s.praktikum-services.tech" --atomic --timeout 15m nexus/sausage-store
+    - rm -f ~/.kube/config
+    - echo "job done"

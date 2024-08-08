@@ -1,0 +1,70 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: sausage-report-backend
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: "{{ .Chart.AppVersion }}"
+    app.kubernetes.io/managed-by: "{{ .Release.Service }}"
+    app.kubernetes.io/component: backend-report
+    app.kubernetes.io/part-of: sausage-store
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    meta.helm.sh/release-name: {{ .Release.Name }}
+    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+  revisionHistoryLimit: {{ .Values.deployment.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      app: {{ .Values.deployment.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deployment.name }}
+    spec:
+      containers:
+        - name: {{ .Values.deployment.name }}
+          image: {{ .Values.deployment.image }}
+          imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
+          env:
+            - name: PORT
+              value: "{{ .Values.deployment.db_port }}"
+            - name: DB
+              valueFrom:
+                secretKeyRef:
+                  name: mongo
+                  key: spring_data_mongodb_uri
+          ports:
+            - name: {{ .Values.deployment.name }}
+              containerPort: {{ .Values.deployment.containerPort }}
+          resources:
+            requests:
+              memory: {{ .Values.deployment.requests.memory }}
+              cpu: {{ .Values.deployment.requests.cpu }}
+            limits:
+              memory: {{ .Values.deployment.limits.memory }}
+              cpu: {{ .Values.deployment.limits.cpu }}
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 80
+              preference:
+                matchExpressions:
+                  - key: availability-zone
+                    operator: In
+                    values:
+                      - zone1
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - backend-report
+              topologyKey: "kubernetes.io/hostname"
+      imagePullSecrets:
+        - name: docker-config-secret
