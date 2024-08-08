@@ -1,0 +1,63 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: sausage-backend
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: "{{ .Chart.AppVersion }}"
+    app.kubernetes.io/managed-by: "{{ .Release.Service }}"
+    app.kubernetes.io/component: backend
+    app.kubernetes.io/part-of: sausage-store
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    meta.helm.sh/release-name: "sausage-store"
+    meta.helm.sh/release-namespace: "{{ .Release.Namespace }}"
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+  revisionHistoryLimit: {{ .Values.deployment.revisionHistoryLimit }}
+  strategy:
+    type: {{ .Values.deployment.type }}
+    rollingUpdate:
+      maxUnavailable: {{ .Values.deployment.maxUnavailable }}
+      maxSurge: {{ .Values.deployment.maxSurge }}
+  selector:
+    matchLabels:
+      app: {{ .Values.deployment.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deployment.name }}
+    spec:
+      containers:
+        - image: {{ .Values.deployment.image }}
+          name: {{ .Values.deployment.name }}
+          imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
+          env:
+            - name: VAULT_HOST
+              value: "{{ .Values.secrets.vault_host }}"
+            - name: REPORT_PATH
+              value: "{{ .Values.secrets.log_path }}"
+            - name: LOG_PATH
+              value: "{{ .Values.secrets.log_path }}"
+            - name: SPRING_FLYWAY_ENABLED
+              value: "false"
+            - name: VAULT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: vault
+                  key: vault_token
+          ports:
+            - name: {{ .Values.deployment.name }}
+              containerPort: {{ .Values.deployment.containerPort }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.deployment.path }}
+              port: {{ .Values.deployment.port }}
+            initialDelaySeconds: {{ .Values.deployment.initialDelaySeconds }}
+            periodSeconds: {{ .Values.deployment.periodSeconds }}
+            timeoutSeconds: {{ .Values.deployment.timeoutSeconds }}
+            failureThreshold: {{ .Values.deployment.failureThreshold }}
+      imagePullSecrets:
+        - name: docker-config-secret
