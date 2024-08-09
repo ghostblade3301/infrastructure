@@ -53,7 +53,6 @@ backend-report:
     spring_data_mongodb_uri: bW9uZ29kYjovL3N0ZC0wMjYtMzU6VGVzdHVzcjEyMzRAcmMxYS1oM2JvZnBnYTY0YngyZ2RqLm1kYi55YW5kZXhjbG91ZC5uZXQ6MjcwMTgvc3RkLTAyNi0zNT90bHM9dHJ1ZSZ0bHNBbGxvd0ludmFsaWRDZXJ0aWZpY2F0ZXM9dHJ1ZQ==
   deployment:
     name: backend-report
-    replicas: 1
     revisionHistoryLimit: 12
     image: gitlab.praktikum-services.ru:5050/std-026-35/sausage-store/backend-report_kubernetes:latest
     imagePullPolicy: IfNotPresent
