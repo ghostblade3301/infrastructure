@@ -13,7 +13,4 @@ deploy:
   stage: deploy
   image: argoproj/argocd:v2.12.0
   script:
-    - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app set sausage-store-std-026-35 -p backend.deployment.image.tag=latest
-    - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app set sausage-store-std-026-35 -p backend-report.deployment.image.tag=latest
-    - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app set sausage-store-std-026-35 -p frontend.deployment.image.tag=latest
     - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app sync sausage-store-std-026-35
