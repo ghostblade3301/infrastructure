@@ -4,7 +4,7 @@ stages:
 kubernetes:
   stage: module-pipelines
   trigger:
-    include: "sausage-store-chart/.gitlab-ci.yml"
+    include: "argocd/.gitlab-ci.yml"
     strategy: depend
   only:
-    - helm
+    - argocd
