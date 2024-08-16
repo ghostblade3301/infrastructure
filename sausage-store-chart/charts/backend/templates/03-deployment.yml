@@ -29,6 +29,10 @@ spec:
     metadata:
       labels:
         app: {{ .Values.deployment.name }}
+      annotations:
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: "8080"
+        prometheus.io/scrape: "true" 
     spec:
       containers:
         - image: {{ .Values.deployment.image }}
