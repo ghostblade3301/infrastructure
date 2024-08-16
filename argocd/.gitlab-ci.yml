@@ -6,5 +6,5 @@ build-and-push-helm-package:
   image: dtzar/helm-kubectl
   script:
     - helm package sausage-store-chart/
-    - curl -u ${NEXUS_REPO_USER}:${NEXUS_REPO_PASS} --upload-file sausage-store-0.1.0.tgz http://nexus.praktikum-services.tech/repository/std-026-35-helm/sausage-store-0.1.0.tgz
+    - curl -u ${NEXUS_REPO_USER}:${NEXUS_REPO_PASS} --upload-file sausage-store-0.1.0.tgz https://nexus.praktikum-services.tech/repository/std-026-35-helm/sausage-store-0.1.0.tgz
 #    - curl -u ${NEXUS_REPO_USER}:${NEXUS_REPO_PASS} -o sausage-store-0.1.0.tgz http://nexus.praktikum-services.tech/repository/std-026-35-helm/
