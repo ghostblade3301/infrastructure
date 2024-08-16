@@ -7,4 +7,4 @@ kubernetes:
     include: "argocd/.gitlab-ci.yml"
     strategy: depend
   only:
-    - argocd
+    - main
