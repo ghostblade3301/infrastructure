@@ -1,0 +1,122 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sausage-store-std-026-35
+spec:
+  destination:
+    name: ''
+    namespace: std-026-35
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: ''
+    repoURL: 'http://nexus.praktikum-services.tech/repository/std-026-35-helm/'
+    targetRevision: 0.1.0
+    chart: sausage-store
+    helm:
+      values: |
+        backend:
+          service:
+            name: backend
+            port: 8080
+            targetPort: 8080
+          secrets:
+            vault_name: vault
+            revisionHistoryLimit: 12
+            vault_host: "http://std-026-35.praktikum-services.tech:8200/"
+            log_path: "/logs"
+            vault_token: aHZzLmRwYjZjNFBHUmtOajRLRWJtY3hmamxEaQ==
+            dockerconfigjson: ewogICAgImF1dGhzIjogewogICAgICAgICJnaXRsYWIucHJha3Rpa3VtLXNlcnZpY2VzLnJ1OjUwNTAiOnsKICAgICAgICAgICAgImF1dGgiOiJjM1JrTFRBeU5pMHpOVHB3TTNwUWFtRnBiMUZWVFdNNU5XTklWRVJvWVE9PSIKICAgICAgICB9CiAgICB9Cn0=
+          deployment:
+            name: backend
+            replicas: 3
+            revisionHistoryLimit: 12
+            maxUnavailable: 2
+            maxSurge: 20%
+            strategy:
+            type: RollingUpdate
+            image: gitlab.praktikum-services.ru:5050/std-026-35/sausage-store/sausage-backend:latest
+            imagePullPolicy: Always
+            containerPort: 8080
+            livenessProbe:
+            httpGet:
+            path: /actuator/health
+            port: 8080
+            initialDelaySeconds: 100
+            periodSeconds: 30
+            timeoutSeconds: 15
+            failureThreshold: 6
+          vpa:
+            name: backend
+            updateMode: "Off"
+            containerName: "*"
+            minAllowed:
+              cpu: 0
+              memory: 128Mi
+            maxAllowed:
+              cpu: 1
+              memory: 512Mi
+            controlledResources: '["cpu", "memory"]'
+            controlledValues: RequestsAndLimits
+        backend-report:
+          service:
+            name: backend
+            port: 8080
+            targetPort: 8080
+          secrets:
+            name: mongo
+            app: backend-report
+            spring_data_mongodb_uri: bW9uZ29kYjovL3N0ZC0wMjYtMzU6VGVzdHVzcjEyMzRAcmMxYS1oM2JvZnBnYTY0YngyZ2RqLm1kYi55YW5kZXhjbG91ZC5uZXQ6MjcwMTgvc3RkLTAyNi0zNT90bHM9dHJ1ZSZ0bHNBbGxvd0ludmFsaWRDZXJ0aWZpY2F0ZXM9dHJ1ZQ==
+          deployment:
+            name: backend-report
+            replicas: 1
+            revisionHistoryLimit: 12
+            image: gitlab.praktikum-services.ru:5050/std-026-35/sausage-store/backend-report_kubernetes:latest
+            imagePullPolicy: IfNotPresent
+            db_port: 8080
+            containerPort: 8080
+            requests:
+              memory: "128Mi"
+              cpu: 0.1
+            limits:
+              memory: "256Mi"
+              cpu: 0.2
+            affinity:
+              weight: 80
+          hpa:
+            name: backend-report-hpa
+            app: backend-report-hpa
+            minReplicas: 2
+            maxReplicas: 5
+            averageUtilization: 75
+        frontend:
+          service:
+            name: frontend
+            app: frontend
+            port: 8080
+            targetPort: 8080
+          secrets:
+            name: docker-config-secret
+            dockerconfigjson: ewogICAgImF1dGhzIjogewogICAgICAgICJnaXRsYWIucHJha3Rpa3VtLXNlcnZpY2VzLnJ1OjUwNTAiOnsKICAgICAgICAgICAgImF1dGgiOiJjM1JrTFRBeU5pMHpOVHB3TTNwUWFtRnBiMUZWVFdNNU5XTklWRVJvWVE9PSIKICAgICAgICB9CiAgICB9Cn0=
+          deployment:
+            name: frontend
+            app: frontend
+            replicas: 1
+            revisionHistoryLimit: 12
+            type: Recreate
+            image: gitlab.praktikum-services.ru:5050/std-026-35/sausage-store/frontend_kubernetes:latest
+            imagePullPolicy: Always
+            containerPort: 8080
+          ingress:
+            name: frontend
+            host: "026-35.k8s.praktikum-services.tech"
+            port: 8080
+          syncPolicy:
+            automated:
+              prune: false
+              selfHeal: false
+  sources: []
+  project: std-026-35
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false

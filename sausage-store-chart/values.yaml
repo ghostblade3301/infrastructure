@@ -93,6 +93,6 @@ frontend:
     containerPort: 8080
   ingress:
     name: frontend
-    host: "026-35.k8s.praktikum-services.tech"
+    host: "std-026-35.k8s.praktikum-services.tech"
     port: 8080
 
