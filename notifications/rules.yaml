@@ -21,10 +21,10 @@ data:
               component: "Backend"
             annotations:
               summary: "Backend instance is down"
-              description: "Backend of namespace std-026-35 is unanavailable more than 1 min"
+              description: "Backend app of namespace std-026-35 is unanavailable more than 1 min"
 
           - alert: 5xxErrors
-            expr: sum(http_server_requests_seconds_count{status="500"})
+            expr: rate(http_server_requests_seconds_count{status="500"}[1m]) > 0
             for: 1m
             labels:
               severity: critical
@@ -46,7 +46,7 @@ data:
               description: "Latency issues. More than 100 in the last minute"
 
           - alert: ActuatorError
-            expr: http_server_requests_seconds_count{uri="/actuator/prometheus", status=~"4..|5.."}
+            expr: rate(http_server_requests_seconds_count{uri="/actuator/prometheus", status=~"4..|5.."}[1m]) > 0
             for: 1m
             labels:
               severity: warning
