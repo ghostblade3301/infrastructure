@@ -1,5 +1,3 @@
-# Практическая работа 1.
-
 ## Установка Terraform
 
 - Скачать [terraform](https://hashicorp-releases.yandexcloud.net/terraform/)
